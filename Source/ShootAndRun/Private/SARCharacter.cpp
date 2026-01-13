@@ -140,17 +140,5 @@ void ASARCharacter::PreviousWeapon()
 		return;	
 	}
 	
-	
 	CurrentWeaponIndex--;
-}
-
-void ASARCharacter::DisableMovement() const
-{
-	GetCharacterMovement()->SetMovementMode(MOVE_None);
-	GetController()->StopMovement();
-}
-
-void ASARCharacter::EnableMovementAfterAnimMontageFinished(UAnimMontage* Montage, bool bInterrupted) const
-{
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
