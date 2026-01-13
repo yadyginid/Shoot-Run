@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SARWeapon.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Character.h"
+#include "pma/TypeDefs.h"
 #include "SARCharacter.generated.h"
 
 UCLASS()
@@ -32,12 +34,20 @@ private:
 
 	void HorizontalRotate(float value);
 	void VerticalRotate(float value);
-
+	
 	void Sprint();
+	void StopSprint();
+	
+	void Attack();
+	void NextWeapon();
+	void PreviousWeapon();
 
 public:
 	UPROPERTY(Blueprintable, BlueprintReadOnly, Category = "Jump")
 	bool bInAir;
+	
+	UPROPERTY(Blueprintable, BlueprintReadOnly, Category = "Sprint")
+	bool bSprint;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* Camera;
@@ -47,4 +57,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump|Animation")
 	UAnimMontage* JumpAnimation;
+	
+	UPROPERTY()
+	TArray<ASARWeapon*> Weapons;
+	
+private:
+	int CurrentWeaponIndex;
 };

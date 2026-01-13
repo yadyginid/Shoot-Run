@@ -21,6 +21,7 @@ void USARCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Velocity = SARCharacter->GetVelocity();
 		Speed = Velocity.Length();
+		Direction = CalculateDirection(Velocity, SARCharacter->GetActorRotation());
 		
 		SARCharacter->bInAir = SARCharacter->GetCharacterMovement()->IsFalling();
 	}

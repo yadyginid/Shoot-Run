@@ -3,6 +3,8 @@
 
 #include "SARCharacter.h"
 
+#include "SARPistol.h"
+#include "SARRifle.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -24,6 +26,17 @@ ASARCharacter::ASARCharacter()
 	bUseControllerRotationRoll = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	
+	CurrentWeaponIndex = 0;
+	
+	if (GetWorld() != nullptr)
+	{
+		ASARRifle* RifleInstance = CreateDefaultSubobject<ASARRifle>(TEXT("Rifle"));
+		ASARPistol* PistolInstance = CreateDefaultSubobject<ASARPistol>(TEXT("Pistol"));
+		
+		Weapons.Add(RifleInstance);
+		Weapons.Add(PistolInstance);	
+	}
 }
 
 // Called when the game starts or when spawned
@@ -45,6 +58,13 @@ void ASARCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ASARCharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ASARCharacter::StopJumping);
 	
+	InputComponent->BindAction("Sprint", IE_Pressed, this, &ASARCharacter::Sprint);
+	InputComponent->BindAction("Sprint", IE_Released, this, &ASARCharacter::StopSprint);
+	
+	InputComponent->BindAction("Attack", IE_Pressed, this, &ASARCharacter::Attack);
+	
+	InputComponent->BindAction("NextWeapon", IE_Pressed, this, &ASARCharacter::NextWeapon);
+	InputComponent->BindAction("PreviousWeapon", IE_Pressed, this, &ASARCharacter::PreviousWeapon);
 }
 
 void ASARCharacter::HorizontalMove(float value)
@@ -83,5 +103,43 @@ void ASARCharacter::VerticalRotate(float value)
 
 void ASARCharacter::Sprint()
 {
-	//CharacterMovement->MaxWalkSpeed = 10;
+	bSprint = true;
+	GetCharacterMovement()->MaxWalkSpeed = 1200.0f;
+}
+
+void ASARCharacter::StopSprint()
+{
+	bSprint = false;
+	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+}
+
+void ASARCharacter::Attack()
+{
+	if (!Weapons.IsValidIndex(CurrentWeaponIndex))
+		return;	
+	
+	Weapons[CurrentWeaponIndex]->Fire(this);
+}
+
+void ASARCharacter::NextWeapon()
+{
+	if (!Weapons.IsValidIndex(CurrentWeaponIndex + 1))
+	{
+		CurrentWeaponIndex = 0;
+		return;	
+	}
+	
+	CurrentWeaponIndex++;
+}
+
+void ASARCharacter::PreviousWeapon()
+{
+	if (!Weapons.IsValidIndex(CurrentWeaponIndex - 1))
+	{
+		CurrentWeaponIndex = Weapons.Num() - 1;
+		return;	
+	}
+	
+	
+	CurrentWeaponIndex--;
 }
