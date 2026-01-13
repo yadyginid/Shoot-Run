@@ -22,36 +22,29 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 private:
 	void HorizontalMove(float value);
 	void VerticalMove(float value);
+
 	void HorizontalRotate(float value);
 	void VerticalRotate(float value);
-	
-	void CheckJumpInput();
-	
-	void Zoom(float value);
-	void SwitchCamera();
-	
-	UPROPERTY()
-	bool bJumping;
-	
-	UPROPERTY()
-	UCameraComponent* Camera; 
-	
-	UPROPERTY()
+
+	void Sprint();
+
+public:
+	UPROPERTY(Blueprintable, BlueprintReadOnly, Category = "Jump")
+	bool bInAir;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
+	UCameraComponent* Camera;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* SpringArm;
 	
-	UPROPERTY()
-	bool bFirstPerson;
-	
-	UPROPERTY()
-	UAnimBlueprint* AnimBlueprint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump|Animation")
+	UAnimMontage* JumpAnimation;
 };
