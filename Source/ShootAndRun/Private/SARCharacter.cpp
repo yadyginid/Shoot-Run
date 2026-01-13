@@ -31,11 +31,11 @@ ASARCharacter::ASARCharacter()
 	
 	if (GetWorld() != nullptr)
 	{
-		ASARRifle* RifleInstance = CreateDefaultSubobject<ASARRifle>(TEXT("Rifle"));
 		ASARPistol* PistolInstance = CreateDefaultSubobject<ASARPistol>(TEXT("Pistol"));
+		ASARRifle* RifleInstance = CreateDefaultSubobject<ASARRifle>(TEXT("Rifle"));
 		
+		Weapons.Add(PistolInstance);
 		Weapons.Add(RifleInstance);
-		Weapons.Add(PistolInstance);	
 	}
 }
 
@@ -126,9 +126,9 @@ void ASARCharacter::NextWeapon()
 	if (!Weapons.IsValidIndex(CurrentWeaponIndex + 1))
 	{
 		CurrentWeaponIndex = 0;
-		return;	
+		return;
 	}
-	
+
 	CurrentWeaponIndex++;
 }
 
@@ -142,4 +142,15 @@ void ASARCharacter::PreviousWeapon()
 	
 	
 	CurrentWeaponIndex--;
+}
+
+void ASARCharacter::DisableMovement() const
+{
+	GetCharacterMovement()->SetMovementMode(MOVE_None);
+	GetController()->StopMovement();
+}
+
+void ASARCharacter::EnableMovementAfterAnimMontageFinished(UAnimMontage* Montage, bool bInterrupted) const
+{
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }

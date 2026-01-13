@@ -16,16 +16,20 @@ void ASARWeapon::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASARWeapon::Fire(ACharacter *Character) const
+void ASARWeapon::Fire(ACharacter* Character) const
 {
 	// Запускаем анимацию через PlayAnimMontage
 	if (FireAnimMontage == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null FireAnimMontage"));
 		return;
+	}
 
 	if (Character == nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Null Owner Character"));
+		UE_LOG(LogTemp, Error, TEXT("Null Owner Character"));
+		return;
 	}
-	else
-		Character->PlayAnimMontage(FireAnimMontage, 1.0f);
+
+	Character->PlayAnimMontage(FireAnimMontage, 1.0f);
 }
