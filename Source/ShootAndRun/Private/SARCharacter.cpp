@@ -72,6 +72,7 @@ void ASARCharacter::HorizontalMove(float value)
 	if (value)
 	{
 		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+		Direction.X = 0;
 		AddMovementInput(Direction, value);
 	}
 }
