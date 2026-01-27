@@ -58,7 +58,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump|Animation")
 	UAnimMontage* JumpAnimation;
 	
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapons")
 	TArray<ASARWeapon*> Weapons;
 	
 private:

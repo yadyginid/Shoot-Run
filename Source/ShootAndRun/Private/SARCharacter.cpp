@@ -36,6 +36,8 @@ ASARCharacter::ASARCharacter()
 		
 		Weapons.Add(PistolInstance);
 		Weapons.Add(RifleInstance);
+		Weapons.Add(PistolInstance);
+		Weapons.Add(RifleInstance);
 	}
 }
 
@@ -119,6 +121,7 @@ void ASARCharacter::Attack()
 	if (!Weapons.IsValidIndex(CurrentWeaponIndex))
 		return;	
 	
+	UE_LOG(LogTemp, Error, TEXT("CurrentWeaponIndex is %d"), CurrentWeaponIndex);
 	Weapons[CurrentWeaponIndex]->Fire(this);
 }
 
